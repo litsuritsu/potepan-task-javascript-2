@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電卓</title>
+
+    <!-- CSS読み込み -->
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="calculator">
+        <!-- 計算式や結果を表示する画面 -->
+        <div id="display" class="display">0</div>
+
+        <table class="buttons">
+            <!-- AC, /ボタン、ACは3ブロック、/は1ブロック -->
+            <tr>
+                <td colspan="3"><button type="button" id="clear-button" class="clear-button">AC</button></td>
+                <td><button type="button" class="operator-button">/</button></td>
+            </tr>
+
+            <!-- 7, 8, 9, *ボタン、それぞれ1ブロックずつ -->
+            <tr>
+                <td><button type="button" class="number-button">7</button></td>
+                <td><button type="button" class="number-button">8</button></td>
+                <td><button type="button" class="number-button">9</button></td>
+                <td><button type="button" class="operator-button">*</button></td>
+            </tr>
+
+            <!-- 4, 5, 6, -ボタン、それぞれ1ブロックずつ -->
+            <tr>
+                <td><button type="button" class="number-button">4</button></td>
+                <td><button type="button" class="number-button">5</button></td>
+                <td><button type="button" class="number-button">6</button></td>
+                <td><button type="button" class="operator-button">-</button></td>
+            </tr>
+
+            <!-- 1, 2, 3, +ボタン、それぞれ1ブロックずつ -->
+            <tr>
+                <td><button type="button" class="number-button">1</button></td>
+                <td><button type="button" class="number-button">2</button></td>
+                <td><button type="button" class="number-button">3</button></td>
+                <td><button type="button" class="operator-button">+</button></td>
+            </tr>
+
+            <!-- 0, ., =ボタン、0は2ブロック、.と=は1ブロックずつ -->
+            <tr>
+                <td colspan="2"><button type="button" class="number-button zero-button">0</button></td>
+                <td><button type="button" id="decimal-button" class="decimal-button">.</button></td>
+                <td><button type="button" id="equal-button" class="equal-button">=</button></td>
+            </tr>
+        </table>   
+    </div>
+
+    <!-- JavaScript読み込み -->
+    <script src="main.js"></script>
+</body>
+</html>
