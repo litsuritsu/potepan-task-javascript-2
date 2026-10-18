@@ -18,13 +18,18 @@ const clearButton = document.getElementById("clear-button");
 // =ボタン
 const equalButton = document.getElementById("equal-button");
 
-// --- 変数 ---
+// --- 入力を保存する変数 ---
 
-// 入力を保存する変数
+// 現在入力している数字
 let displayedNumber = "0";
 
-// 小数点が入力されたか管理する変数
+// 入力した計算式
+let expression = ""
+
+// 小数点が入力されたか
 let hasDecimal = false;
+
+// --- 計算に使用する変数 ---
 
 // 最初に入力した数字
 let firstNumber = 0;
@@ -34,6 +39,8 @@ let selectedOperator = "";
 
 // 次の数字を入力するか管理する変数
 let isNewNumber = false;
+
+
 
 // --- 各ボタンを押した時 ---
 
@@ -48,6 +55,10 @@ numberButtons.forEach((button) => {
             displayedNumber = number;
             isNewNumber = false;
             hasDecimal = false;
+
+            if (selectedOperator === "") {
+                expression = "";
+            }
         }
         // 表示が0の場合
         else if (displayedNumber === "0") {
@@ -59,7 +70,7 @@ numberButtons.forEach((button) => {
         }
 
         // 画面を更新
-        display.textContent = displayedNumber;
+        display.textContent = expression + displayedNumber;
     });
 });
 
@@ -70,6 +81,10 @@ decimalButton.addEventListener("click", () => {
         displayedNumber = "0";
         isNewNumber = false;
         hasDecimal = false;
+
+        if (selectedOperator === "") {
+            expression = "";
+        }
     }
  
     // 小数点がまだ入力されていない場合
@@ -82,7 +97,7 @@ decimalButton.addEventListener("click", () => {
     }
 
     // 画面を更新
-    display.textContent = displayedNumber;
+    display.textContent = expression + displayedNumber;
 });
 
 // --- 演算子ボタン ---
@@ -93,46 +108,53 @@ operatorButtons.forEach((button) => {
             return;
         }
 
-        // すでに演算子が選択されていて、2つ目の数字も入力されている場合
-        if (selectedOperator !== "" && isNewNumber === false) {
+        // 演算子の連続入力を防ぐ
+        if (selectedOperator !== "" && isNewNumber === true) {
+            return;
+        }
+
+        // すでに演算子がある場合は計算する
+        if (selectedOperator !== "") {
             // 2つ目の数字を取得
             const secondNumber = Number(displayedNumber);
 
-            // 計算結果を保存する変数
-            let result = 0;
-
             // 計算する
             if (selectedOperator === "+") {
-                result = firstNumber + secondNumber;
+                firstNumber += secondNumber;
             }
             else if (selectedOperator === "-") {
-                result = firstNumber - secondNumber;
+                firstNumber -= secondNumber;
             }
             else if (selectedOperator === "*") {
-                result = firstNumber * secondNumber;
+                firstNumber *= secondNumber;
             }
             else if (selectedOperator === "/") {
                 if (secondNumber === 0) {
                     displayedNumber = "error";
                     display.textContent = displayedNumber;
                     selectedOperator = "";
+                    expression = "";
                     isNewNumber = true;
                     hasDecimal = false;
                     return;
                 }
-                result = firstNumber / secondNumber;
+
+                firstNumber /= secondNumber;
             }
-
-            // 計算結果を表示
-            displayedNumber = String(result);
-            display.textContent = displayedNumber;
         }
-
-        // 最初の数字を保存
-        firstNumber = Number(displayedNumber);
+        else {
+            // 最初の数字を保存
+            firstNumber = Number(displayedNumber);
+        }
 
         // 押した演算子を取得
         selectedOperator = button.textContent;
+
+        // 計算式に数字と演算子を追加
+        expression = expression + displayedNumber + selectedOperator;
+
+        // 計算式を表示
+        display.textContent = expression;
 
         // 次の数字を入力できる状態にする
         isNewNumber = true;
@@ -175,13 +197,16 @@ equalButton.addEventListener("click", () => {
     // 割り算
     else if (selectedOperator === "/") {
         if (secondNumber === 0) {
-            displayedNumber = "エラー";
+            displayedNumber = "error";
             display.textContent = displayedNumber;
+            firstNumber = 0;
             selectedOperator = "";
+            expression = "";
             isNewNumber = true;
             hasDecimal = false;
             return;
         }
+
         result = firstNumber / secondNumber;
     }
 
@@ -194,6 +219,7 @@ equalButton.addEventListener("click", () => {
     // 計算に使用した変数をリセット
     firstNumber = 0;
     selectedOperator = "";
+    expression = "";
     isNewNumber = true;
     hasDecimal = false;
 });
@@ -213,6 +239,9 @@ clearButton.addEventListener("click", () => {
     firstNumber = 0;
     selectedOperator = "";
     isNewNumber = false;
+
+    // 計算式もリセット
+    expression = "";
 
     // 表示を0に戻す
     display.textContent = displayedNumber;
